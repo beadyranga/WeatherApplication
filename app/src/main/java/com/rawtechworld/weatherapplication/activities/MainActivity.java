@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * The BroadcastReceiver used to listen from broadcasts from the service.
      */
-    private MyReceiver myReceiver;
+    private LocationReceiver locationReceiver;
 
     /**
      * A reference to the service used to get location updates
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Updated Location value
      */
-    private static Location mUpdatedLocation;
+    public static Location mUpdatedLocation;
 
     /**
      * Tracks the bound state of the service.
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myReceiver = new MyReceiver();
+        locationReceiver = new LocationReceiver();
         setContentView(R.layout.activity_main);
 
         if (!checkPermissions()) {
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (mUpdatedLocation != null) {
-                    getWhetherRequest(Utils.WEATHER_URL + Utils.getLocationText(mUpdatedLocation));
+                    getWeatherRequest(Utils.WEATHER_URL + Utils.getLocationText(mUpdatedLocation));
                 } else {
                     Toast.makeText(MainActivity.this, R.string.wait_for_location,
                             Toast.LENGTH_SHORT).show();
@@ -163,13 +163,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver,
+        LocalBroadcastManager.getInstance(this).registerReceiver(locationReceiver,
                 new IntentFilter(LocationService.ACTION_BROADCAST));
     }
 
     @Override
     protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(myReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver);
         super.onPause();
     }
 
@@ -282,13 +282,13 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Receiver for broadcasts sent by {@link LocationService}.
      */
-    private class MyReceiver extends BroadcastReceiver {
+    public static class LocationReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             Location location = intent.getParcelableExtra(LocationService.EXTRA_LOCATION);
             if (location != null) {
-                Toast.makeText(MainActivity.this, Utils.getLocationText(location),
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, Utils.getLocationText(location),
+//                        Toast.LENGTH_SHORT).show();
                 mUpdatedLocation = location;
             }
         }
@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
      * Method to Send the Weather Request
      * @param url Wheather Request Url
      */
-    private void getWhetherRequest(String url) {
+    private void getWeatherRequest(String url) {
         showDialog();
         mWeatherData = new WeatherData();
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,

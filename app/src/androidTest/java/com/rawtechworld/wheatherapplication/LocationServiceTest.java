@@ -35,12 +35,10 @@ public  class LocationServiceTest {
     @Rule
     public final ServiceTestRule mServiceRule = new ServiceTestRule();
 
-
     @Before
     public void setUp() {
         context = InstrumentationRegistry.getInstrumentation().getContext();
     }
-
 
     @Test
     public void testWithBoundService() throws TimeoutException {
@@ -61,8 +59,6 @@ public  class LocationServiceTest {
         // Verify that the service is working correctly.
         assertThat(service.serviceIsRunningInForeground(context), is(any(Boolean.class)));
     }
-
-
 
     @Test (expected = NullPointerException.class)
     public void onBind() throws Exception {

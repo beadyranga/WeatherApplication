@@ -3,6 +3,7 @@ package com.rawtechworld.wheatherapplication;
 import android.location.Location;
 import android.location.LocationManager;
 
+import com.rawtechworld.weatherapplication.activities.MainActivity;
 import com.rawtechworld.weatherapplication.controller.Utils;
 
 import org.junit.Before;
