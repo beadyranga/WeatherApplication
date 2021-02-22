@@ -221,8 +221,6 @@ public class LocationService extends Service {
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 
-
-
     /**
      * Sets the location request parameters.
      */
